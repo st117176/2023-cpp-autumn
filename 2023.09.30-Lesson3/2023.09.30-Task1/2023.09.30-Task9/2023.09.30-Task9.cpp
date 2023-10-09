@@ -8,12 +8,15 @@ int main(int argc, char* argv[])
 	std::cin >> a;
 	std::cin >> b;
 
-	while (a != b) {
-		if ((a % 2 == 0) and (a / 2) >= b) {
+	while (a != b) 
+	{
+		if ((a % 2 == 0) and (a / 2) >= b) 
+		{
 			a = a / 2;
 			std::cout << ":2\n";
 		}
-		else {
+		else 
+		{
 			a--;
 			std::cout << "-1\n";
 		}

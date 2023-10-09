@@ -13,10 +13,13 @@ int main(int argc, char* argv[])
 	std::cin >> c;
 	std::cin >> d;
 
-	for (int i = 0; i <= 1000; i++) {
-		if ((i * (a * i * i + b * i + c) + d) == 0){
+	for (int i = 0; i <= 1000; i++) 
+	{
+		if ((i * (a * i * i + b * i + c) + d) == 0)
+		{
 			std::cout << i << " ";
 		}
 	}
+
 	return 0;
 }
