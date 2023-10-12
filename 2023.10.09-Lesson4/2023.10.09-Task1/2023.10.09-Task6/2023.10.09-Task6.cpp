@@ -1,56 +1,53 @@
-﻿#include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
+﻿#include<iostream>
+#include<stdlib.h>
 
-int main(int argc, char**)
-{
-	int n = 0;
-	std::cin >> n;
-	int* c = (int*)malloc(sizeof(int) * n);
-	int a = 0; // max element
-	int b = 0; // min element
-
-	for (int i = 0; i < n; i++)
+	int main(int, char**)
 	{
-		std::cin >> *(c + i);
-		a = *(c);
-		b = *(c);
-		for (int j = 0; j < n; ++j)
+		int n = 0;
+		std::cin >> n;
+
+		int max = 0;
+		int min = 0;
+		int* a = (int*)malloc(sizeof(int) * n);
+
+		max = -1000000;
+		min = 1000000;
+		for (int i = 0; i < n; i = i + 1)
 		{
-			if (*(c + j) > a)
+			std::cin >> *(a + i);
+
+			if (*(a + i) > max)
 			{
-				a = *(c + j);
+				max = *(a + i);
 			}
-			if (*(c + j) < b)
+
+			if (*(a + i) < min)
 			{
-				b = *(c + j);
+				min = *(a + i);
 			}
 		}
 
-	int d = 0;
-	d = a;
-
-	for (int k = 0; k < n; ++k)
-	{
-		if (*(c + k) == a)
+		for (int i = n - 1; i >= 0; i = i - 1)
 		{
-			*(c + k) = b;
+			if (*(a + i) == max)
+			{
+				*(a + i) = min;
+				break;
+			}
 		}
-	}
 
-	for (int k = 0; k < n; ++k)
-	{
-		if (*(c + k) == b)
+		for (int i = 0; i < n; i = i + 1)
 		{
-			*(c + k) = d;
+			if (*(a + i) == min)
+			{
+				*(a + i) = max;
+				break;
+			}
 		}
-	}
 
-	for (int i = 0; i < n; ++i)
-	{
-		std::cout << *(c + i) << " ";
+		for (int i = 0; i < n; i = i + 1)
+		{
+			std::cout << *(a + i) << " ";
+		}
+		return 0;
 	}
-	free(c);
-
-	return 0;
-}
