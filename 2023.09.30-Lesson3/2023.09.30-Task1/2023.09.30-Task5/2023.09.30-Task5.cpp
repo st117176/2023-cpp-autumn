@@ -8,18 +8,18 @@ int main(int argc, char* argv[])
 
 	std::cin >> n;
 
-	while (i <= n) 
+	while (i <= n)
 	{
 		int b = i;
 		int c = 0;
 
-		while (b) 
+		while (b)
 		{
 			c = c * 10 + b % 10;
 			b = b / 10;
 		}
 
-		if (i == c) 
+		if (i == c)
 		{
 			a += 1;
 		}

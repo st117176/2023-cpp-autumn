@@ -1,15 +1,16 @@
-﻿
-#include <iostream>
-#include <string>
+﻿#include <iostream>
 
-int main()
+int main(int argc, char* argv[])
 {
-	int n;
-	float a;
-	std::string end{"25"};
-	std::cin >> n;
-	int c = (n / 10) * ((n / 10) + 1);
-	std::string s = std::to_string(c);
-	std::cout << s + end;
+	int a = 0;
+	int b = 0;
+	int c = 0;
+	std::cin >> a;
+
+	b = a / 10;
+	c = b + 1;
+
+	std::cout << b * c << "25";
+
 	return 0;
 }

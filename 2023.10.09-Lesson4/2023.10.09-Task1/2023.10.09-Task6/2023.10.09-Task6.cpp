@@ -49,5 +49,7 @@
 		{
 			std::cout << *(a + i) << " ";
 		}
+		free(a);
+			
 		return 0;
 	}

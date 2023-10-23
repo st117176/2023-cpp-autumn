@@ -1,15 +1,15 @@
-﻿
-#include <iostream>
-#include <string>
-int main()
-{
-	int a;
-	std::cin >> a;
-	int lastl = 9 - a;
-	std::string lastletter = std::to_string(lastl);
-	std::string astring = std::to_string(a);
+﻿#include <iostream>
 
-	std::cout << astring << "9" << lastletter << std::endl;
+int main(int argc, char* argv[])
+{
+	int a = 0;
+	int b = 0;
+	int k = 0;
+	std::cin >> k;
+
+	a = k * 100 + 90 + 9 - k;
+
+	std::cout << a + b;
+
 	return 0;
 }
-
