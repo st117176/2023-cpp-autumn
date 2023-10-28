@@ -12,16 +12,13 @@ int main(int argc, char**)
 		std::cin >> *(c + i);
 		maxel = *(c);
 
-		for (int j = 0; j < n; ++j)
-		{
-			if (*(c + i) > maxel)
+		if (*(c + i) > maxel)
 			{
 				maxel = *(c + i);
 			}
-		}
 	}
-	std::cout << maxel;
 	free(c);
+	std::cout << maxel;
 
 	return 0;
 }
