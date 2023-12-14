@@ -4,7 +4,6 @@
 
 #include<cstring>
 #include<string>
-#include<fstream>
 
 void CountSize(char* filename, int& lines, int& maxLine)
 {
