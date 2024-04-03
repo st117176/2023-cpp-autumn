@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{84bc4e43-d48b-409e-b5e9-017236a83416}</ProjectGuid>
-    <RootNamespace>Сфетофорчики</RootNamespace>
+    <ProjectGuid>{c44a140b-3f08-4618-b817-71be1539d149}</ProjectGuid>
+    <RootNamespace>Цветнойдождь</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Сфетофорчики.cpp" />
+    <ClCompile Include="Цветной дождь.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
