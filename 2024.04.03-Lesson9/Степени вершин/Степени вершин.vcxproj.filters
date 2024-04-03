@@ -15,12 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Task1.cpp">
+    <ClCompile Include="Степени вершин.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="in.txt" />
-    <Text Include="out.txt" />
   </ItemGroup>
 </Project>
