@@ -1,11 +1,21 @@
 ﻿#include <iostream>
 #include <cmath>
+#include <fstream>
+#include <string>
+#include <regex>
 
 class Equation {
 public:
-    Equation() {}
+
     Equation(double a, double b, double c, double d, double e) : a(a), b(b), c(c), d(d), e(e) {}
-    ~Equation() {}
+
+    ~Equation()
+    {
+        a = b = c = d = e = p_f = q_f = r_f = Q_f = R_f = D_f = S_f = T_f = theta_f = p_c = q_c = D_c = D_s = 0;
+    }
+
+    Equation(const Equation&& other) noexcept : a(other.a), b(other.b), c(other.c), d(other.d), e(other.e) {}
+
     void solve(double a, double b, double c, double d, double e);
 
 private:
@@ -14,8 +24,6 @@ private:
     double c = 0.0;
     double d = 0.0;
     double e = 0.0;
-
-    //s
 
     double p_f = (-3 * b * b) / (8 * a * a) + c / a;
     double q_f = b * b * b / (8 * a * a * a) - b * c / (2 * a * a) + d / a;
@@ -26,7 +34,7 @@ private:
     double D_f = Q_f * Q_f * Q_f + R_f * R_f;
 
     double S_f = pow(R_f + sqrt(D_f), 1.0 / 3);
-    double T_f = pow(R_f - sqrt(D_f), 1.0 / 3);
+    double T_f = pow(R_f - sqrt(D_f), 1 / 3);
 
     double theta_f = acos(R_f / sqrt(-Q_f * Q_f * Q_f)) / 3;
 
@@ -62,55 +70,32 @@ private:
     };
 
     void CDiscriminantPositive() {
-        double u = cbrt(-q_c / 2 + sqrt(D_c));
-        double v = cbrt(-q_c / 2 - sqrt(D_c));
+        double gamma1 = cbrt(q_c + sqrt(D_c));
+        double gamma2 = cbrt(q_c - sqrt(D_c));
+        double offset = c / (3 * b);
 
-        double y1 = u + v;
-        double y2 = -(u + v) / 2 + (u - v) * sqrt(3) / 2;
-        double y3 = -(u + v) / 2 - (u - v) * sqrt(3) / 2;
+        std::cout << "x1: " << gamma1 + gamma2 - offset << '\n';
 
-        double x1 = y1 - c / (3 * b);
-        double x2 = y2 - c / (3 * b);
-        double x3 = y3 - c / (3 * b);
+        double re = -0.5 * (gamma1 + gamma2) - offset;
+        double im = 0.5 * (gamma1 - gamma2) * sqrt(3.0);
 
-        std::cout << "x1: " << x1 << std::endl;
-        std::cout << "x2: " << x2 << std::endl;
-        std::cout << "x3: " << x3 << std::endl;
-    };
-
-    void CDiscriminantZero() {
-        double u = cbrt(-q_c / 2);
-        double v = cbrt(-q_c / 2);
-
-        double y1 = u + v;
-        double y2 = -(u + v) / 2;
-
-        double x1 = y1 - c / (3 * b);
-        double x2 = y2 - c / (3 * b);
-
-        std::cout << "x1: " << x1 << std::endl;
-        std::cout << "x2: " << x2 << std::endl;
-        std::cout << "x3: " << x2 << std::endl;
+        if (D_c == 0.0) {
+            std::cout << "x2: " << re << '\n';
+            std::cout << "x3: " << re << '\n';
+        }
+        else {
+            std::cout << "x2: " << re << " + " << im << "i\n";
+            std::cout << "x3: " << re << " - " << im << "i\n";
+        }
     };
 
     void CDiscriminantNegative() {
-        double theta_c = acos(-q_c / 2 * sqrt(-27 / p_c * p_c * p_c) / 2);
-
-        double u1 = 2 * sqrt(-p_c / 3) * cos(theta_c / 3);
-        double u2 = 2 * sqrt(-p_c / 3) * cos((theta_c + 2 * PI) / 3);
-        double u3 = 2 * sqrt(-p_c / 3) * cos((theta_c + 4 * PI) / 3);
-
-        double y1 = u1;
-        double y2 = u2;
-        double y3 = u3;
-
-        double x1 = y1 - c / (3 * b);
-        double x2 = y2 - c / (3 * b);
-        double x3 = y3 - c / (3 * b);
-
-        std::cout << "x1: " << x1 << std::endl;
-        std::cout << "x2: " << x2 << std::endl;
-        std::cout << "x3: " << x3 << std::endl;
+        double offset = c / (3 * b);
+        double theta_c = acos(q_c / (p_c * sqrt(p_c)));
+        double r_c = 2 * sqrt(p_c);
+        for (int n = 0; n < 3; ++n) {
+            std::cout << "x: " << r_c * cos((theta_c + 2 * n * PI) / 3) - offset << '\n';
+        }
     }
 
     void SDiscriminantPositive() {
@@ -131,36 +116,32 @@ private:
         std::cout << "Решений нет." << std::endl;
     }
 
-    //e
-
     void ferrari(double a, double b, double c, double d, double e);
+
     void cardano(double b, double c, double d, double e);
+
     void square(double c, double d, double e);
+
     void linear(double d, double e);
 };
 
-void Equation::solve(double a, double b, double c, double d, double e)
-{
+void Equation::solve(double a, double b, double c, double d, double e) {
     return a != 0 ? ferrari(a, b, c, d, e) : (b != 0 ? cardano(b, c, d, e) : (c != 0 ? square(c, d, e) : linear(d, e)));
 }
 
-void Equation::ferrari(double a, double b, double c, double d, double e)
-{
+void Equation::ferrari(double a, double b, double c, double d, double e) {
     D_f >= 0 ? FDiscriminantPositive() : FDiscriminantNegative();
 }
 
-void Equation::cardano(double b, double c, double d, double e)
-{
-    D_c > 0 ? CDiscriminantPositive() : (D_c == 0 ? CDiscriminantZero() : CDiscriminantNegative());
+void Equation::cardano(double b, double c, double d, double e) {
+    D_c > 0 ? CDiscriminantPositive() : CDiscriminantNegative();
 }
 
-void Equation::square(double c, double d, double e)
-{
+void Equation::square(double c, double d, double e) {
     D_s > 0 ? SDiscriminantPositive() : (D_s == 0 ? SDiscriminantZero() : ZeroSolutions());
 }
 
-void Equation::linear(double d, double e)
-{
+void Equation::linear(double d, double e) {
     if (d != 0) {
         double x = -e / d;
         std::cout << "x: " << x << std::endl;
@@ -175,21 +156,56 @@ void Equation::linear(double d, double e)
     }
 }
 
-int main(int argc, char* argv[])
-{
-    Equation equation;
+int main(int argc, char* argv[]) {
 
     setlocale(LC_ALL, "Russian");
-    double a = 0.0;
-    double b = 0.0;
-    double c = 0.0;
-    double d = 0.0;
-    double e = 0.0;
 
-    std::cout << "Введите коэффициенты уравнения (ax^4 + bx^3 + cx^2 + dx + e): " << std::endl;
-    std::cin >> a >> b >> c >> d >> e;
+    std::ifstream file("equation.txt");
+    if (!file.is_open()) {
+        std::cerr << "Не удалось открыть файл." << std::endl;
+        return 1;
+    }
+    std::string line;
+    std::getline(file, line);
+    file.close();
 
-    equation.solve(a, b, c, d, e);
+    std::regex coeff_regex(R"(([-+]?)(\d*\.?\d*)\*?x(?:\^(\d+))?|([-+]?\d+\.?\d*))");
+
+    std::smatch matches;
+    double a = 0;
+    double b = 0;
+    double c = 0;
+    double d = 0;
+    double e = 0;
+
+    std::string::const_iterator searchStart(line.cbegin());
+    while (std::regex_search(searchStart, line.cend(), matches, coeff_regex)) {
+        int sign = (matches[1].matched && matches[1] == "-") ? -1 : 1;
+        double coeff = matches[2].matched ? (matches[2].length() == 0 ? 1 : std::stod(matches[2])) : std::stod(matches[0]);
+        int power = matches[3].matched ? std::stod(matches[3]) : (matches[2].matched ? 1 : 0);
+        coeff *= sign;
+        switch (power) {
+        case 4: a = coeff; break;
+        case 3: b = coeff; break;
+        case 2: c = coeff; break;
+        case 1: d = coeff; break;
+        case 0: e = std::stod(matches[4]); break;
+        default: break;
+        }
+
+        searchStart = matches.suffix().first;
+    }
+
+    std::cout << "Коэффициенты: a = " << a
+        << ", b = " << b
+        << ", c = " << c
+        << ", d = " << d
+        << ", e = " << e << std::endl;
+
+    auto equation = new Equation(a, b, c, d, e);
+    equation->solve(a, b, c, d, e);
+
+    delete equation;
 
     return 0;
 }
